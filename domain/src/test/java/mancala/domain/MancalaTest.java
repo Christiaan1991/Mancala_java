@@ -11,13 +11,15 @@ package mancala.domain;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FooTest {
+public class MancalaTest{
     // Define a test starting with @Test. The test is like
     // a small main method - you need to setup everything
     // and you can write any arbitrary Java code in it.
     @Test 
     public void aNormalBorlStartsWith4Stones() {
-        Foo foo = new Foo();
-        assertEquals(42, foo.theAnswerToLifeTheUniverseAndEverything());
+        Player player_1 = new Player();
+        Player player_2 = new Player();
+
+        assertEquals(4, player_1.getScore());
     }
 }
