@@ -41,7 +41,10 @@ public class Player {
 	// }
 
 	public int turn(int bowlNo){
-		first_bowl.move()
+		int returnedStones;
+		
+		returnedStones = first_bowl.move(bowlNo);
+		return returnedStones;
 	}
 
 	

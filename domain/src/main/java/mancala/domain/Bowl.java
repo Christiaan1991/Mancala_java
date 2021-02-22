@@ -35,4 +35,17 @@ public class Bowl extends Kalaha{
 
 	public Bowl goNextBowl(){return next_bowl;}
 
+	public Kalaha goKalaha(){return kalaha;}
+
+	public int move(int num){
+
+		//performing actual move on bowl
+        int hand_stones = getStones(); //save # stones in hand
+		removeAll();					//removes all stones from that bowl
+
+		return getStones();
+
+
+	}
+
 }

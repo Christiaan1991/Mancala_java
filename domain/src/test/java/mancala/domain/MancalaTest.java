@@ -20,10 +20,9 @@ public class MancalaTest{
         
         Player player = new Player(0);
 
-        player.turn(0);
+        int stones = player.turn(0);
 
-        //assertEquals(0, player.bowlsTest(0));
-        //assertEquals(4, player.bowlsTest(0));
+        assertEquals(0, stones);
         
     }
 
