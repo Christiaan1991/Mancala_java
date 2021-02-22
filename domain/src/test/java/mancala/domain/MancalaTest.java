@@ -16,10 +16,30 @@ public class MancalaTest{
     // a small main method - you need to setup everything
     // and you can write any arbitrary Java code in it.
     @Test 
-    public void aNormalBorlStartsWith4Stones() {
-        Player player_1 = new Player();
-        Player player_2 = new Player();
+    public void CheckStonesinBowls() {
+        
+        Player player = new Player(0);
 
-        assertEquals(4, player_1.getScore());
+        player.turn(0);
+
+        //assertEquals(0, player.bowlsTest(0));
+        //assertEquals(4, player.bowlsTest(0));
+        
     }
+
+    // @Test 
+    // public void CheckKalaha() {
+        
+    //     Kalaha kalaha = new Kalaha(4);
+
+    //     //number of stones in bowl 1
+    //     assertEquals(5, kalaha.addStones(1));
+    // }
+
+    // @Test
+    // public void CheckStonesInBowls() {
+        
+    //     Bowl bowl = new Bowl(6,4);
+    //     assertEquals(7, bowl.getNextBowlID());
+    // }
 }
