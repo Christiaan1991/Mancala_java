@@ -8,28 +8,21 @@ package mancala.domain;
 
 public class Player {
 
-	//private int player_id;
 	private Bowl first_bowl;
 
 	/* default constructor */
 	public Player(int player_id){
-		//this.player_id = player_id;
-
 		first_bowl = new Bowl(this, player_id,0, 4); //create first bowl with player_id, bowl_id 0 and 4 stones, and more bowls from there
 	}
 
 	//second constructor
 	public Player(Player first_player, int player_id){
-		//this.player_id = player_id;
-
 		first_bowl = new Bowl(first_player,player_id, 0, 4); //create first bowl with player_id, bowl_id 0 and 4 stones, and more bowls from there
 	}
 
-//	public int getPlayerID(){return player_id;}
-
 	public Bowl getFirstBowl() {return first_bowl;}
 
-	public Kalaha getKalahaFirst(){return getFirstBowl().findBowl(5,first_bowl).getKalaha();}
+	public Kalaha getKalahaFirst(){return getFirstBowl().findBowl(5).getKalaha();}
 
 	public Bowl getFirstBowlOpponent(){return getKalahaFirst().getOtherPlayer().getFirstBowl();}
 
@@ -39,7 +32,6 @@ public class Player {
 				check(bowl.goNextBowl()); //check next bowl
 			}
 			else{//bowl has stones
-				System.out.println("No empty bowls!");
 				return true;
 			}
 		}
@@ -57,7 +49,7 @@ public class Player {
 		}
 
 		//First check if move is allowed!
-		Bowl picked_bowl = first_bowl.findBowl(bowlNo, first_bowl); //find correct bowl
+		Bowl picked_bowl = first_bowl.findBowl(bowlNo); //find correct bowl
 
 		if(picked_bowl.hasStones()){
 			picked_bowl.move(); //take stones on hand, empty bowl and distribute stones

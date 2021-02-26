@@ -43,31 +43,41 @@ public class Bowl extends Kalaha{
 
 	public Kalaha getKalaha(){return kalaha;}
 
-	public Bowl findBowl(int num, Bowl bowl){
-		if(bowl.getBowlID() != num) {
-			return findBowl(num, bowl.goNextBowl());
+	public boolean isKalaha(){
+		if(getKalaha() == null){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
+	public Bowl findBowl(int num){
+		if(this.getBowlID() != num) {
+			return this.goNextBowl().findBowl(num);
 			}
-		return bowl;
+		return this;
 	}
 
-	public Bowl getOppositeBowl(Bowl bowl){
-		return bowl.findBowl(5, bowl).getKalaha().getOtherPlayer().getFirstBowl().findBowl(5 % bowl.getBowlID(), bowl.findBowl(5, bowl).getKalaha().getOtherPlayer().getFirstBowl());
+	public Bowl getOppositeBowl(){
+		return this.findBowl(5).getKalaha().getOtherPlayer().getFirstBowl().findBowl(5 % this.getBowlID());
 	}
 
-	public void distribute(int num, Bowl bowl){
+	public void distribute(int num){
+		Bowl bowl = this;
 		if(num != 0){//if number of hand_stones is not zero, we go to next bowl and add one
 			if(bowl.getBowlID() != 5){ //not in the last bowl
 				Bowl next_bowl = bowl.goNextBowl();
-				if(next_bowl.getStones() == 0 && bowl.getPlayerID() == 0 && num == 1){//if next bowl is empty, own players bowl and 1 stone in hand remaining
-					int opposite_stones = getOppositeBowl(next_bowl).getStones();
-					getOppositeBowl(next_bowl).removeAll();
-					next_bowl.findBowl(5,next_bowl).getKalaha().addStones(opposite_stones + 1);
+				if(next_bowl.getStones() == 0 && next_bowl.getPlayerID() == 0 && num == 1){//if next bowl is empty, own players bowl and 1 stone in hand remaining
+					int opposite_stones = next_bowl.getOppositeBowl().getStones();
+					next_bowl.getOppositeBowl().removeAll();
+					next_bowl.findBowl(5).getKalaha().addStones(opposite_stones + 1);
 					num--;
 				}
 				else{
 					next_bowl.addStones(1);
 					num--;
-					distribute(num, next_bowl);
+					next_bowl.distribute(num);
 				}
 			}
 
@@ -76,7 +86,7 @@ public class Bowl extends Kalaha{
 
 				if(kalaha.getPlayerID() == 0) {//if we are in own kalaha
 
-					bowl.getKalaha().addStones(1); //we add stone to kalaha
+					kalaha.addStones(1); //we add stone to kalaha
 					num--;
 
 					if(num == 0){
@@ -89,7 +99,7 @@ public class Bowl extends Kalaha{
 						num--;
 						kalaha.getOtherPlayer().getFirstBowl();
 						//and we continue
-						distribute(num, kalaha.getOtherPlayer().getFirstBowl());
+						kalaha.getOtherPlayer().getFirstBowl().distribute(num);
 					}
 				}
 
@@ -97,7 +107,7 @@ public class Bowl extends Kalaha{
 					//and continue distributing
 					kalaha.getFirstPlayer().getFirstBowl().addStones(1);
 					num--;
-					distribute(num, kalaha.getFirstPlayer().getFirstBowl());
+					kalaha.getFirstPlayer().getFirstBowl().distribute(num);
 				}
 
 			}
@@ -109,7 +119,7 @@ public class Bowl extends Kalaha{
 		int hand_stones = getStones();    //take stones in hand
 		removeAll();                    //remove all stones from bowl
 
-		distribute(hand_stones, this);	//distribute stones to next bowls
+		this.distribute(hand_stones);	//distribute stones to next bowls
 
 		return 0;
 	}

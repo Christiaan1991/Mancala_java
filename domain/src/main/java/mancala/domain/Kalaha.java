@@ -1,5 +1,4 @@
 package mancala.domain;
-import java.util.Scanner;
 
 // Make your own mancala implementation using your design.
 // You can take this stub as an example how to make a 
