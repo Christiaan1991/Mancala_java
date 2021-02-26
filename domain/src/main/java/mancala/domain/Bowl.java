@@ -1,51 +1,116 @@
 package mancala.domain;
-import java.util.Scanner;
 
 // Make your own mancala implementation using your design.
 // You can take this stub as an example how to make a 
 // class inside a package and how to test it.
 
 public class Bowl extends Kalaha{
-	private int bowl_id;
-	private int player_id;
-	private static int num_bowls = 6;
+	private final int bowl_id;
+	private static final int num_bowls = 6;
 	private Bowl next_bowl;
-	private Kalaha kalaha;
+	public Kalaha kalaha;
 
-	public Bowl(int player_id, int bowl_id, int num_stones){
-		super(player_id);
+	public Bowl(Player first_player, int player_id, int bowl_id, int num_stones){
+		super(first_player, player_id);
 		this.bowl_id = bowl_id;
 		this.num_stones = num_stones;
 		
 		if(bowl_id < num_bowls-1){
-			next_bowl = new Bowl(player_id, bowl_id + 1, num_stones); //create next bowls with bowl_id = bowl_id+1 and num_stones = num_stones
+			next_bowl = new Bowl(first_player, player_id, bowl_id + 1, num_stones); //create next bowls with bowl_id = bowl_id+1 and num_stones = num_stones
 		}
 
-		else if(bowl_id == num_bowls){
-			kalaha = new Kalaha(player_id); //create Kalaha from Bowl class
+		else if(bowl_id == num_bowls-1) {
+			kalaha = new Kalaha(first_player, player_id); //create Kalaha from Bowl class
 		}
-
-		//Bowl b = (Bowl) kalaha;
 		
 	}
 
+	public boolean hasStones(){
+		if(this.getStones()!=0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	public void removeAll(){num_stones = 0;}
+
+	public void setStones(int num){num_stones = num;}
 
 	public int getBowlID(){return bowl_id;}
 
 	public Bowl goNextBowl(){return next_bowl;}
 
-	public Kalaha goKalaha(){return kalaha;}
+	public Kalaha getKalaha(){return kalaha;}
 
-	public int move(int num){
-
-		//performing actual move on bowl
-        int hand_stones = getStones(); //save # stones in hand
-		removeAll();					//removes all stones from that bowl
-
-		return getStones();
-
-
+	public Bowl findBowl(int num, Bowl bowl){
+		if(bowl.getBowlID() != num) {
+			return findBowl(num, bowl.goNextBowl());
+			}
+		return bowl;
 	}
 
+	public Bowl getOppositeBowl(Bowl bowl){
+		return bowl.findBowl(5, bowl).getKalaha().getOtherPlayer().getFirstBowl().findBowl(5 % bowl.getBowlID(), bowl.findBowl(5, bowl).getKalaha().getOtherPlayer().getFirstBowl());
+	}
+
+	public void distribute(int num, Bowl bowl){
+		if(num != 0){//if number of hand_stones is not zero, we go to next bowl and add one
+			if(bowl.getBowlID() != 5){ //not in the last bowl
+				Bowl next_bowl = bowl.goNextBowl();
+				if(next_bowl.getStones() == 0 && bowl.getPlayerID() == 0 && num == 1){//if next bowl is empty, own players bowl and 1 stone in hand remaining
+					int opposite_stones = getOppositeBowl(next_bowl).getStones();
+					getOppositeBowl(next_bowl).removeAll();
+					next_bowl.findBowl(5,next_bowl).getKalaha().addStones(opposite_stones + 1);
+					num--;
+				}
+				else{
+					next_bowl.addStones(1);
+					num--;
+					distribute(num, next_bowl);
+				}
+			}
+
+			else{//we are in bowl 5, so then we link with kalaha
+				kalaha = bowl.getKalaha();
+
+				if(kalaha.getPlayerID() == 0) {//if we are in own kalaha
+
+					bowl.getKalaha().addStones(1); //we add stone to kalaha
+					num--;
+
+					if(num == 0){
+						//Player move ends in own kalaha, play again!
+						System.out.println("You can go take another turn");
+					}
+					else{
+						//we need to manually add first stone to first bowl, since distribute will move on to next
+						kalaha.getOtherPlayer().getFirstBowl().addStones(1);
+						num--;
+						kalaha.getOtherPlayer().getFirstBowl();
+						//and we continue
+						distribute(num, kalaha.getOtherPlayer().getFirstBowl());
+					}
+				}
+
+				else if(kalaha.getPlayerID() == 1){//if we are in opposite kalaha, add stone to next bowl
+					//and continue distributing
+					kalaha.getFirstPlayer().getFirstBowl().addStones(1);
+					num--;
+					distribute(num, kalaha.getFirstPlayer().getFirstBowl());
+				}
+
+			}
+		}
+	}
+
+	public int move() {
+
+		int hand_stones = getStones();    //take stones in hand
+		removeAll();                    //remove all stones from bowl
+
+		distribute(hand_stones, this);	//distribute stones to next bowls
+
+		return 0;
+	}
 }

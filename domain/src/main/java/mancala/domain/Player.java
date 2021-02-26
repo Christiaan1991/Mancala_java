@@ -1,52 +1,71 @@
 package mancala.domain;
-import java.util.Scanner;
 
-// Make your own mancala implementation using your design.
-// You can take this stub as an example how to make a 
-// class inside a package and how to test it.
+/*
+ Make your own mancala implementation using your design.
+ You can take this stub as an example how to make a
+ class inside a package and how to test it.
+*/
 
 public class Player {
 
-	private int player_id;
-	private Player new_player;
+	//private int player_id;
 	private Bowl first_bowl;
 
-	//default constructor
+	/* default constructor */
 	public Player(int player_id){
-		this.player_id = player_id;
+		//this.player_id = player_id;
 
-		first_bowl = new Bowl(player_id, 0, 4); //create first bowl with player_id, bowl_id 0 and 4 stones, and more bowls from there
+		first_bowl = new Bowl(this, player_id,0, 4); //create first bowl with player_id, bowl_id 0 and 4 stones, and more bowls from there
+	}
 
-		if(player_id < 2){
-			new_player = new Player(player_id + 1); //create new player if player if < 2
+	//second constructor
+	public Player(Player first_player, int player_id){
+		//this.player_id = player_id;
+
+		first_bowl = new Bowl(first_player,player_id, 0, 4); //create first bowl with player_id, bowl_id 0 and 4 stones, and more bowls from there
+	}
+
+//	public int getPlayerID(){return player_id;}
+
+	public Bowl getFirstBowl() {return first_bowl;}
+
+	public Kalaha getKalahaFirst(){return getFirstBowl().findBowl(5,first_bowl).getKalaha();}
+
+	public Bowl getFirstBowlOpponent(){return getKalahaFirst().getOtherPlayer().getFirstBowl();}
+
+	public boolean check(Bowl bowl){
+		try{
+			if(!bowl.hasStones()){/* if bowl has no stones */
+				check(bowl.goNextBowl()); //check next bowl
+			}
+			else{//bowl has stones
+				System.out.println("No empty bowls!");
+				return true;
+			}
+		}
+		catch(NullPointerException e){//all bowls are checked, no more exist
+			return false;
+		}
+		return false; //will never reach
+	}
+
+	public void turn(int bowlNo){
+		//first check if all bowls of player are empty
+		if(!check(first_bowl)){
+			System.out.println("All bowls are empty!");
+			return;
+		}
+
+		//First check if move is allowed!
+		Bowl picked_bowl = first_bowl.findBowl(bowlNo, first_bowl); //find correct bowl
+
+		if(picked_bowl.hasStones()){
+			picked_bowl.move(); //take stones on hand, empty bowl and distribute stones
+		}
+
+		else{
+			System.out.println("Bowl does not contain any stones!");
 		}
 
 	}
-
-	public int getPlayerID(){return player_id;}
-
-	//public int getOtherPlayerID(){return new_player.getPlayerID();}
-
-	//public int getBowlIDThroughPlayer(){return bowl.getBowlID();}
-
-	//public int getNextBowlIDThroughPlayer(){return bowl.goNextBowl().getBowlID();}
-
-	// public int bowlsTest(int num){
-	// 	return bowl.getBowlID();
-	// 	// while(num != bowl.getBowlID()){
-	// 	// 	bowl = bowl.goNextBowl();
-	// 	// }
-	// 	// return bowl.getStones();
-	// 	//return bowl.getBowlID();
-	// }
-
-	public int turn(int bowlNo){
-		int returnedStones;
-		
-		returnedStones = first_bowl.move(bowlNo);
-		return returnedStones;
-	}
-
-	
-
 }
