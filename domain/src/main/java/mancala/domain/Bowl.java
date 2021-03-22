@@ -22,7 +22,6 @@ public class Bowl extends Kalaha{
 		else if(bowl_id == num_bowls-1) {
 			kalaha = new Kalaha(first_player, player_id); //create Kalaha from Bowl class
 		}
-		
 	}
 
 	public boolean hasStones(){
@@ -33,6 +32,7 @@ public class Bowl extends Kalaha{
 			return false;
 		}
 	}
+
 	public void removeAll(){num_stones = 0;}
 
 	public void setStones(int num){num_stones = num;}

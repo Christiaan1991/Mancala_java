@@ -26,16 +26,16 @@ class PlayerDemo {
         @Test
         @DisplayName("Setup of the Players")
         void Player_setup() {
-            assertAll("Board setup by checking Bowl ID's",
-                    () -> assertTrue(player.getFirstBowl().getBowlID()),
-                    () -> assertTrue(player.getFirstBowl().goNextBowl().getBowlID()));
+//            assertAll("Players are generated",
+//                    () -> assertTrue(player.getFirstBowl().getBowlID()),
+//                    () -> assertTrue(player.getFirstBowl().goNextBowl().getBowlID()));
         }
 
         @Test
         @DisplayName("Setup of the playing Board")
         void Board_setup() {
             assertAll("Board setup by checking Bowl ID's",
-                    () -> assertEquals(0,player.getFirstBowl().getBowlID()),
+                    () -> assertEquals(0, player.getFirstBowl().getBowlID()),
                     () -> assertEquals(1, player.getFirstBowl().goNextBowl().getBowlID()),
                     () -> assertEquals(2, player.getFirstBowl().findBowl(2).getBowlID()),
                     () -> assertEquals(3, player.getFirstBowl().findBowl(3).getBowlID()),
