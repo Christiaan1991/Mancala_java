@@ -1,1 +1,79 @@
 /** Add some styles */
+
+.pit {
+
+	background-color: lightblue; 
+	border: none;
+	color: white;
+	padding: 40px 80px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 32px;
+	margin: 8px 8px;
+	cursor: pointer;
+  
+}
+
+#mancalarow {
+  display: grid;
+  grid-template-columns: 20% 43% 20%;
+  grid-template-rows: 100%;
+}
+
+#ownmancala{
+	grid-column-start: 3;
+	background-color: lightblue; 
+  	border: none;
+  	color: white;
+  	padding: 80px 80px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+  	font-size: 32px;
+  	margin: 12px 8px;
+  	cursor: pointer;
+}
+
+#othermancala{
+	grid-column-start: 1;
+	background-color: lightblue; 
+  	border: none;
+  	color: white;
+  	padding: 80px 80px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+ 	font-size: 32px;
+  	margin: 12px 8px;
+  	cursor: pointer;
+}
+
+#board {
+	height: 450px;
+	width: 100%;
+
+}
+
+#mancala {
+  padding: 0px 0px;
+  float:left;
+  position: fixed;
+  margin: 12px 0px;
+  margin-left: 970px;
+  
+}
+
+#otherplayerpit {
+	height: 150px;
+	width: 100%;
+	margin: 0px 0px;
+	position: fixed;
+}
+
+#playerpit {
+	height: 150px;
+	width: 100%;
+	margin: 0px 0px;
+	position: fixed;
+}

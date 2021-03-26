@@ -1,5 +1,6 @@
 package mancala.api;
 
+import mancala.domain.MancalaException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -49,6 +50,8 @@ public class StartMancalaTest {
         assertEquals(7, players[1].getPits()[0].getIndex());
         assertEquals(4, players[1].getPits()[0].getNrOfStones());
         assertEquals(0, players[1].getPits()[6].getNrOfStones());
+        assertTrue(players[0].getHasTurn());
+        assertTrue(players[1].getHasTurn());
     }
 
     @Test
