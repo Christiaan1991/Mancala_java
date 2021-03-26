@@ -23,9 +23,14 @@ public class Kalaha {
 		}
 	}
 
-	public Player getOtherPlayer(){return new_player;}
-
-	public Player getFirstPlayer(){return first_player;}
+	public Player getNextPlayer(){
+		if(getPlayerID() == 0){
+			return new_player;
+		}
+		else{
+			return first_player;
+		}
+	}
 
 	public void addStones(int num){num_stones = num_stones + num;}
 

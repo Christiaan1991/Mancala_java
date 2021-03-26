@@ -23,10 +23,8 @@ public class MoveMancala {
 		String namePlayer1 = (String) session.getAttribute("player1");
 		String namePlayer2 = (String) session.getAttribute("player2");
 
-		//perform move
+		//perform move and change turns
 		mancala.playPit(indexinput.getIndex());
-
-		//change turn
 
 
 		session.setAttribute("mancala", mancala);

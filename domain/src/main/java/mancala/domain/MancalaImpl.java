@@ -19,17 +19,29 @@ public class MancalaImpl implements Mancala {
         }
     }
 
+    public void switchTurn(){
+        int newTurn = 0;
+        if(hasTurn == PLAYER_ONE){
+            newTurn = PLAYER_TWO;
+        }
+        else if(hasTurn == PLAYER_TWO){
+            newTurn = PLAYER_ONE;
+        }
+        hasTurn = newTurn;
+    }
+
     @Override
 	public void playPit(int index) throws MancalaException {
-        // Implement playing a pit from player 1.
-        if(index <= 6){
-            player.turn(index);
+        // Implement playing a pit from player 1
+        if(index <= 6 && hasTurn == PLAYER_ONE){
+            player.turn(index, hasTurn);
+            switchTurn();
         }
         //implement playing a pit from player 2.
-        else if (index >= 7 && index <= 16){
-            player.getOpponent().turn((index % 7));
+        else if (index >= 7 && index <= 13 && hasTurn == PLAYER_TWO){
+            player.getOpponent().turn((index % 7), hasTurn);
+            switchTurn();
         }
-
     }
 	
 	@Override

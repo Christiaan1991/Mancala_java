@@ -51,7 +51,7 @@ public class StartMancalaTest {
         assertEquals(4, players[1].getPits()[0].getNrOfStones());
         assertEquals(0, players[1].getPits()[6].getNrOfStones());
         assertTrue(players[0].getHasTurn());
-        assertTrue(players[1].getHasTurn());
+        assertFalse(players[1].getHasTurn());
     }
 
     @Test

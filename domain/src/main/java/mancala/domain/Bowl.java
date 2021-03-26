@@ -60,15 +60,15 @@ public class Bowl extends Kalaha{
 	}
 
 	public Bowl getOppositeBowl(){
-		return this.findBowl(5).getKalaha().getOtherPlayer().getFirstBowl().findBowl(5 % this.getBowlID());
+		return this.findBowl(5).getKalaha().getNextPlayer().getFirstBowl().findBowl(5 % this.getBowlID());
 	}
 
-	public void distribute(int num){
+	public void distribute(int num, int hasTurn){
 		Bowl bowl = this;
 		if(num != 0){//if number of hand_stones is not zero, we go to next bowl and add one
 			if(bowl.getBowlID() != 5){ //not in the last bowl
 				Bowl next_bowl = bowl.goNextBowl();
-				if(next_bowl.getStones() == 0 && next_bowl.getPlayerID() == 0 && num == 1){//if next bowl is empty, own players bowl and 1 stone in hand remaining
+				if(next_bowl.getStones() == 0 && next_bowl.getPlayerID() == (hasTurn-1) && num == 1){//if next bowl is empty, own players bowl and 1 stone in hand remaining
 					int opposite_stones = next_bowl.getOppositeBowl().getStones();
 					next_bowl.getOppositeBowl().removeAll();
 					next_bowl.findBowl(5).getKalaha().addStones(opposite_stones + 1);
@@ -77,14 +77,14 @@ public class Bowl extends Kalaha{
 				else{
 					next_bowl.addStones(1);
 					num--;
-					next_bowl.distribute(num);
+					next_bowl.distribute(num, hasTurn);
 				}
 			}
 
 			else{//we are in bowl 5, so then we link with kalaha
 				kalaha = bowl.getKalaha();
 
-				if(kalaha.getPlayerID() == 0) {//if we are in own kalaha
+				if(kalaha.getPlayerID() == (hasTurn-1)) {//if we are in own kalaha, which belongs to player who has the turn
 
 					kalaha.addStones(1); //we add stone to kalaha
 					num--;
@@ -95,30 +95,30 @@ public class Bowl extends Kalaha{
 					}
 					else{
 						//we need to manually add first stone to first bowl, since distribute will move on to next
-						kalaha.getOtherPlayer().getFirstBowl().addStones(1);
+						kalaha.getNextPlayer().getFirstBowl().addStones(1);
 						num--;
-						kalaha.getOtherPlayer().getFirstBowl();
+						kalaha.getNextPlayer().getFirstBowl();
 						//and we continue
-						kalaha.getOtherPlayer().getFirstBowl().distribute(num);
+						kalaha.getNextPlayer().getFirstBowl().distribute(num, hasTurn);
 					}
 				}
 
-				else if(kalaha.getPlayerID() == 1){//if we are in opposite kalaha, add stone to next bowl
+				else if(kalaha.getPlayerID() != (hasTurn-1)){//if we are in opposite kalaha, add stone to next bowl
 					//and continue distributing
-					kalaha.getFirstPlayer().getFirstBowl().addStones(1);
+					kalaha.getNextPlayer().getFirstBowl().addStones(1);
 					num--;
-					kalaha.getFirstPlayer().getFirstBowl().distribute(num);
+					kalaha.getNextPlayer().getFirstBowl().distribute(num, hasTurn);
 				}
 
 			}
 		}
 	}
 
-	public void move() {
+	public void move(int hasTurn) {
 
 		int hand_stones = getStones();    //take stones in hand
 		removeAll();                    //remove all stones from bowl
 
-		this.distribute(hand_stones);	//distribute stones to next bowls
+		this.distribute(hand_stones, hasTurn);	//distribute stones to next bowls
 	}
 }

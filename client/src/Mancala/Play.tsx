@@ -36,21 +36,22 @@ export function Play({ gameState, setGameState }: PlayProps) {
         }
 
     }
-	
-	if(gameState.players[0].hasTurn){
-		const status = gameState.players[0].name;
-	}
 
-	else if(gameState.players[1].hasTurn){
-		const status = gameState.players[1].name;
-	}
+    console.log(gameState);
+
+    if(gameState.players[0].hasTurn == true){
+    	status = gameState.players[0].name;
+    }
+    else if(gameState.players[1].hasTurn == true){
+    	status = gameState.players[1].name;
+    }
 	
 
     return (
         <div>
             <p>{gameState.players[0].name} vs {gameState.players[1].name}</p>
             <form onSubmit={(e) => pickIndex(e)}>
-            <div className="status">{gameState.players[1].hasTurn}</div>
+            <div className="status">Turn: {status}</div>
             <div className="board">
             	<div className="otherplayerpit">
 	            	<button className = "pit" onClick={(e) => setIndex("12")}>{gameState.players[1].pits[5].nrOfStones}</button>
@@ -77,11 +78,7 @@ export function Play({ gameState, setGameState }: PlayProps) {
             </form>
 	          
 	        <p className="Message">You picked Pit index: {indexnum}</p>
-	        <p className="turn">You picked Pit index: {gameState.players[0].hasTurn}</p>
-
-	        <div id = "grid">Some text</div>
             
-
         </div>
     )
 }

@@ -75,6 +75,7 @@ class MancalaImplTest {
     void MancalaMoveOpponentPit() throws MancalaException {
 
         MancalaImpl mancala = new MancalaImpl();
+        mancala.playPit(0);
         mancala.playPit(7);
         assertAll("Board setup by checking Bowl ID's",
                 () -> assertEquals(0, mancala.getStonesForPit(7)),
@@ -89,21 +90,39 @@ class MancalaImplTest {
     void MancalaMoveOpponentPitThroughMancala() throws MancalaException {
 
         MancalaImpl mancala = new MancalaImpl();
+        mancala.playPit(0);
         mancala.playPit(11);
         assertAll("Board setup by checking Bowl ID's",
                 () -> assertEquals(0, mancala.getStonesForPit(11)),
                 () -> assertEquals(5, mancala.getStonesForPit(12)),
                 () -> assertEquals(1, mancala.getStonesForPit(13)),
-                () -> assertEquals(5, mancala.getStonesForPit(0)),
-                () -> assertEquals(5, mancala.getStonesForPit(1)),
-                () -> assertEquals(4, mancala.getStonesForPit(2)));
+                () -> assertEquals(1, mancala.getStonesForPit(0)),
+                () -> assertEquals(6, mancala.getStonesForPit(1)),
+                () -> assertEquals(5, mancala.getStonesForPit(2)));
     }
 
     @Test
     void MancalaMovePlayerTurn() throws MancalaException {
 
-        Mancala mancala = new Mancala();
-        assertTrue(mancala.isPlayersTurn(mancala.PLAYER_TWO));
+        Mancala mancala = new MancalaImpl();
+
+        //player 1 turn
+        assertTrue(mancala.isPlayersTurn(1));
+        mancala.playPit(1);
+
+        //player 2 turn
+        assertTrue(mancala.isPlayersTurn(2));
+        mancala.playPit(8);
+
+        //player 1 turn
+        //perform move which is not allowed!
+        assertTrue(mancala.isPlayersTurn(1));
+        mancala.playPit(9);
+
+        //make sure that it is still player 1 turn!
+        assertTrue(mancala.isPlayersTurn(1));
+
+
     }
 
 
