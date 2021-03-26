@@ -122,7 +122,6 @@ class MancalaImplTest {
         //make sure that it is still player 1 turn!
         assertTrue(mancala.isPlayersTurn(1));
 
-
     }
 
 
@@ -135,5 +134,19 @@ class MancalaImplTest {
                     mancala.playPit(6);
                     mancala.playPit(12);
                 });
+    }
+
+    @Test
+    void MancalaMoveToOwnKalaha() throws MancalaException {
+
+        MancalaImpl mancala = new MancalaImpl();
+        mancala.playPit(2);
+        assertAll("Board setup by checking Bowl ID's",
+                () -> assertEquals(0, mancala.getStonesForPit(2)),
+                () -> assertEquals(5, mancala.getStonesForPit(3)),
+                () -> assertEquals(5, mancala.getStonesForPit(4)),
+                () -> assertEquals(5, mancala.getStonesForPit(5)),
+                () -> assertEquals(1, mancala.getStonesForPit(6)),
+                () -> assertEquals(4, mancala.getStonesForPit(7)));
     }
 }

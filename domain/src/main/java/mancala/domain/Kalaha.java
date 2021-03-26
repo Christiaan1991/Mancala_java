@@ -38,4 +38,13 @@ public class Kalaha {
 
 	public int getPlayerID(){return player_id;}
 
+	public boolean isOwnKalaha(int hasTurn){
+		if(this.getPlayerID() == (hasTurn-1)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 }

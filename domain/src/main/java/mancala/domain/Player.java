@@ -7,7 +7,7 @@ package mancala.domain;
 */
 
 public class Player {
-	public static final int NONVALID = 1;
+	public static final int NONVALID = 2;
 	public static final int WINNER = 3;
 
 	private Bowl first_bowl;
@@ -59,7 +59,6 @@ public class Player {
 		//First check if move is allowed!
 		if(picked_bowl.hasStones()){
 			int out = picked_bowl.move(hasTurn);
-			System.out.println(out);
 			return out; //take stones on hand, empty bowl and distribute stones
 		}
 		return NONVALID;

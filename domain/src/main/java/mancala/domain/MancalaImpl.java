@@ -40,12 +40,10 @@ public class MancalaImpl implements Mancala {
 
             //if valid turn, switch turns
             if(out == Bowl.VALID){
-                System.out.println("valid?");
                 switchTurn();
             }
             if(out == Bowl.AGAIN){
-                System.out.println("No switch!");
-                //
+
             }
             if(out == Player.WINNER){
                 winner = hasTurn;

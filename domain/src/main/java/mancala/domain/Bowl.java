@@ -5,7 +5,7 @@ package mancala.domain;
 // class inside a package and how to test it.
 
 public class Bowl extends Kalaha{
-	public static final int AGAIN = 2;
+	public static final int AGAIN = 1;
 	public static final int VALID = 0;
 
 	private final int bowl_id;
@@ -44,16 +44,34 @@ public class Bowl extends Kalaha{
 
 	public Bowl goNextBowl(){return next_bowl;}
 
-	public Kalaha getKalaha(){return kalaha;}
-
-	public boolean isKalaha(){
-		if(getKalaha() == null){
-			return false;
-		}
-		else{
+	public boolean hasNextBowl(){
+		if(goNextBowl() != null){
 			return true;
 		}
+		else{
+			return false;
+		}
 	}
+
+	public boolean hasKalaha(){
+		if(this.getKalaha() != null){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public Kalaha findKalaha(){
+		if(!this.hasKalaha()){
+			return this.goNextBowl().findKalaha();
+		}
+		else{
+			return kalaha;
+		}
+	}
+
+	public Kalaha getKalaha(){ return kalaha; }
 
 	public Bowl findBowl(int num){
 		if(this.getBowlID() != num) {
@@ -66,7 +84,49 @@ public class Bowl extends Kalaha{
 		return this.findBowl(5).getKalaha().getNextPlayer().getFirstBowl().findBowl(5 % this.getBowlID());
 	}
 
-	public int distribute(int num, int hasTurn){
+	public int distribute(int num, int hasTurn) {
+		Bowl bowl = this;
+		while (num != 0) {
+			if (bowl.hasNextBowl()) { //if bowl has a next bowl
+				bowl = bowl.goNextBowl();
+				bowl.addStones(1);
+				num--;
+
+				if (bowl.getStones() == 1 && bowl.getPlayerID() == (hasTurn - 1) && num == 0) { //if no more stones in hand, only
+					bowl.findKalaha().addStones(bowl.getOppositeBowl().getStones() + bowl.getStones());
+					bowl.getOppositeBowl().removeAll();
+					bowl.removeAll();
+					break;
+
+				}
+			} else { //we cannot go to a next bowl, so we go to a kalaha!
+				kalaha = bowl.getKalaha();
+
+				if(kalaha.isOwnKalaha(hasTurn)){
+					kalaha.addStones(1);
+					num--;
+
+					if(num == 0){
+						//Player move ends in own kalaha, play again!
+						System.out.println("You can take another turn");
+						return AGAIN;
+					}
+				}
+
+				//skipping addstones to other kalaha, so we add a stone to the next bowl
+				bowl = kalaha.getNextPlayer().getFirstBowl();
+				bowl.addStones(1);
+				num--;
+			}
+
+		}
+		//return valid move!
+		return VALID;
+	}
+
+
+	public int distribute2(int num, int hasTurn) {
+
 		Bowl bowl = this;
 		if(num != 0){//if number of hand_stones is not zero, we go to next bowl and add one
 			if(bowl.getBowlID() != 5){ //not in the last bowl
@@ -126,7 +186,6 @@ public class Bowl extends Kalaha{
 		int hand_stones = getStones();    //take stones in hand
 		removeAll();                    //remove all stones from bowl
 
-		int out = this.distribute(hand_stones, hasTurn);	//distribute stones to next bowls
-		return out;
+		return distribute(hand_stones, hasTurn);	//distribute stones to next bowls
 	}
 }
