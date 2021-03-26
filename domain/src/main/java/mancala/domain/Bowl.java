@@ -5,6 +5,9 @@ package mancala.domain;
 // class inside a package and how to test it.
 
 public class Bowl extends Kalaha{
+	public static final int AGAIN = 2;
+	public static final int VALID = 0;
+
 	private final int bowl_id;
 	private static final int num_bowls = 6;
 	private Bowl next_bowl;
@@ -63,7 +66,7 @@ public class Bowl extends Kalaha{
 		return this.findBowl(5).getKalaha().getNextPlayer().getFirstBowl().findBowl(5 % this.getBowlID());
 	}
 
-	public void distribute(int num, int hasTurn){
+	public int distribute(int num, int hasTurn){
 		Bowl bowl = this;
 		if(num != 0){//if number of hand_stones is not zero, we go to next bowl and add one
 			if(bowl.getBowlID() != 5){ //not in the last bowl
@@ -91,7 +94,7 @@ public class Bowl extends Kalaha{
 
 					if(num == 0){
 						//Player move ends in own kalaha, play again!
-						System.out.println("You can go take another turn");
+						System.out.println("You can take another turn");
 					}
 					else{
 						//we need to manually add first stone to first bowl, since distribute will move on to next
@@ -111,14 +114,19 @@ public class Bowl extends Kalaha{
 				}
 
 			}
+
 		}
+
+		return Bowl.VALID;
+
 	}
 
-	public void move(int hasTurn) {
+	public int move(int hasTurn) {
 
 		int hand_stones = getStones();    //take stones in hand
 		removeAll();                    //remove all stones from bowl
 
-		this.distribute(hand_stones, hasTurn);	//distribute stones to next bowls
+		int out = this.distribute(hand_stones, hasTurn);	//distribute stones to next bowls
+		return out;
 	}
 }

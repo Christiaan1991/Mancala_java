@@ -3,6 +3,7 @@ package mancala.domain;
 public class MancalaImpl implements Mancala {
     private Player player;
     private int hasTurn;
+    private int winner = Mancala.NO_PLAYERS;
 
     public MancalaImpl() {
         player = new Player(0); //creates player 0, which creates the whole Mancala board and the other player 1
@@ -34,13 +35,38 @@ public class MancalaImpl implements Mancala {
 	public void playPit(int index) throws MancalaException {
         // Implement playing a pit from player 1
         if(index <= 6 && hasTurn == PLAYER_ONE){
-            player.turn(index, hasTurn);
-            switchTurn();
+            //perform turn
+            int out = player.turn(index, hasTurn);
+
+            //if valid turn, switch turns
+            if(out == Bowl.VALID){
+                System.out.println("valid?");
+                switchTurn();
+            }
+            if(out == Bowl.AGAIN){
+                System.out.println("No switch!");
+                //
+            }
+            if(out == Player.WINNER){
+                winner = hasTurn;
+            }
         }
+
         //implement playing a pit from player 2.
         else if (index >= 7 && index <= 13 && hasTurn == PLAYER_TWO){
-            player.getOpponent().turn((index % 7), hasTurn);
-            switchTurn();
+            int out = player.getOpponent().turn((index % 7), hasTurn);
+
+            //if valid turn, switch turns
+            if(out == Bowl.VALID){
+                switchTurn();
+            }
+            if(out == Bowl.AGAIN){
+                System.out.println("No switch!");
+                //
+            }
+            if(out == Player.WINNER){
+                winner = hasTurn;
+            }
         }
     }
 	
@@ -68,6 +94,6 @@ public class MancalaImpl implements Mancala {
 
 	@Override
 	public int getWinner() {
-        return Mancala.NO_PLAYERS;
+        return winner;
     }
 }

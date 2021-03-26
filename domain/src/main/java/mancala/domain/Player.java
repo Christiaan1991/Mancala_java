@@ -7,6 +7,8 @@ package mancala.domain;
 */
 
 public class Player {
+	public static final int NONVALID = 1;
+	public static final int WINNER = 3;
 
 	private Bowl first_bowl;
 
@@ -43,12 +45,12 @@ public class Player {
 		return false; //will never reach
 	}
 
-	public void turn(int bowlNo, int hasTurn){
+	public int turn(int bowlNo, int hasTurn){
 		//first check if all bowls of player are empty
 		//something wrong here
 //		if(!check(first_bowl)){
 //			System.out.println("All bowls are empty!");
-//			return;
+//			return WINNER;
 //		}
 
 
@@ -56,12 +58,10 @@ public class Player {
 
 		//First check if move is allowed!
 		if(picked_bowl.hasStones()){
-			picked_bowl.move(hasTurn); //take stones on hand, empty bowl and distribute stones
+			int out = picked_bowl.move(hasTurn);
+			System.out.println(out);
+			return out; //take stones on hand, empty bowl and distribute stones
 		}
-
-		else{
-			System.out.println("Bowl does not contain any stones!");
-		}
-
+		return NONVALID;
 	}
 }

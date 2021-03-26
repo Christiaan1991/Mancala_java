@@ -37,8 +37,6 @@ export function Play({ gameState, setGameState }: PlayProps) {
 
     }
 
-    console.log(gameState);
-
     if(gameState.players[0].hasTurn == true){
     	status = gameState.players[0].name;
     }
