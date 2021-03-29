@@ -1,18 +1,24 @@
-stages:
+java:
+    stages:
     - build
     - test
 
-build:
-    stage: build
-    script:
-        - echo "Building"
-        - mkdir build
-        - touch build/info.txt
-    artifacts:
-        paths:
-            - build/
-test:
-    stage: test
-    script:
-        - echo "Testing"
-        - test -f "build/info.txt"
+    build:
+        stage: build
+        script:
+            - echo "Building"
+            - mkdir build
+            - touch build/info.txt
+        artifacts:
+            paths:
+                - build/
+    test:
+        stage: test
+        script:
+            - echo "Unit testing"
+            - gradle test
+            - test -f "build/info.txt"
+        artifacts:
+            when: always
+            reports:
+                junit: build/test-results/test/**/TEST-*.xml
