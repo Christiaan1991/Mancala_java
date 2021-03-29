@@ -1,8 +1,20 @@
-java:
+build-job:
+  stage: build
+  script:
+    - echo "Building"
+
+build-test:
   stage: test
   script:
-    - gradle test
-  artifacts:
-    when: always
-    reports:
-      junit: build/test-results/test/**/TEST-*.xml
+    - echo "Perform some unit testing here, from gradle"
+    - echo "Not working yet"
+
+build-test2:
+  stage: test
+  script:
+    - echo "Other tests that we can do, need to think of"
+
+build-deploy:
+  stage: deploy
+  script:
+    - echo "Here we can deploy the application"
