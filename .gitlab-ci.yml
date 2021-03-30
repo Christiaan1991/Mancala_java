@@ -1,13 +1,23 @@
-build-job:
+build-job-a:
   stage: build
   script:
-    - echo "Building"
+    - echo "This path builds something"
+
+build-job-b:
+  stage: build
+  script:
+    - echo "This path builds something else"
 
 build-test:
   stage: test
   script:
     - echo "Perform some unit testing here, from gradle"
-    - echo "Not working yet"
+    - gradle test
+
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-results/test/**/TEST-*.xml
 
 build-test2:
   stage: test
